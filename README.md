@@ -103,17 +103,53 @@ This project follows **Clean Architecture** principles:
 ### Project Structure
 
 ```ini
-./
-├── app/
-│   ├── gateways/        # Payment gateway implementations
-│   ├── verification/   # Payment verification logic
-│   ├── models/         # Domain models (Transaction)
-│   ├── services/       # Business use cases, managers, audit
-│   └── repositories/   # Abstract persistence interfaces
+app/
+├── domain/
+│   └── transaction/
+│       ├── entities/
+│       │   └── transaction.py
+│       ├── value_objects/
+│       │   ├── money.py
+│       │   ├── currency.py
+│       │   └── authority_code.py
+│       ├── services/
+│       │   └── transaction_service.py
+│       ├── events/
+│       │   └── transaction_created.py
+│       ├── repositories/
+│       │   └── transaction_repository.py
+│       └── exceptions.py
 │
-├── grpc/               # gRPC proto files and server stubs
-├── tests/              # Unit & integration tests
-└── main.py             # Application entrypoint
+├── application/
+│   └── transaction/
+│       ├── commands/
+│       │   └── create_transaction.py
+│       ├── handlers/
+│       │   └── create_transaction_handler.py
+│       └── dto.py
+│
+├── infrastructure/
+│   ├── persistence/
+│   │   ├── postgres/
+│   │   │   └── transaction_repository.py
+│   ├── cache/
+│   │   └── redis_transaction_cache.py
+│   ├── gateways/
+│   │   └── zarinpal_client.py
+│   └── config/
+│       └── settings.py
+│
+├── interfaces/
+│   ├── http/
+│   │   └── transaction_controller.py
+│   └── cli/
+│
+├── shared/
+│   ├── logging.py
+│   └── exceptions.py
+│
+└── main.py
+
 ```
 
 ### Clean Architecture Mapping
